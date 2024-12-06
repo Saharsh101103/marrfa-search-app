@@ -75,15 +75,18 @@ const payload = {query, category}
       <div className="my-4">
         <CategoryFilter category={category} setCategory={setCategory} />
       </div>
-      <ResultsList results={results} />
-      {!isMobile && (
+      {results.length > 0 ?
+<ResultsList results={results} />
+    : <p>No results found</p>
+      }
+      {!isMobile && results.length > 0 &&(
         <Pagination
           currentPage={page}
           totalPages={Math.ceil(totalResults / RESULTS_PER_PAGE)}
           onPageChange={setPage}
         />
       )}
-      {isMobile && page * RESULTS_PER_PAGE < totalResults && (
+      {isMobile && page * RESULTS_PER_PAGE < totalResults && results.length > 0 &&(
         <button onClick={handleLoadMore} className="w-full mt-4 p-2 bg-primary text-primary-foreground rounded">
           Load More
         </button>
