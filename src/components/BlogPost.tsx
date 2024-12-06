@@ -23,7 +23,7 @@ export function BlogPost(params: BlogPostProps) {
         }
 
         const data = await response.json();
-        console.log(data)
+
 
         const mockPost: BlogPostType = data.payload
 
@@ -34,14 +34,13 @@ export function BlogPost(params: BlogPostProps) {
         setPost(mockPost)
       } catch (error) {
         console.error("Error fetching results:", error);
-        setPost(null); // Clear results on error
+        setPost(null); 
       }
       
     }
 
     fetchPost()
   }, [params.id])
-  console.log("POST , ->", post)
 
   if (!post) {
     return <div>Loading...</div>

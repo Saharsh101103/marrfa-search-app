@@ -17,7 +17,6 @@ Marrfa Search App is a modern search platform built using Next.js 15 with a full
 - **Next.js 15**: For building the full-stack application (frontend + backend).
 - **TypeScript**: For type-safe development.
 - **TailwindCSS**: For responsive and modern UI design.
-- **Node.js**: For backend functionalities.
 - **API Integration**: Custom backend APIs for search functionality.
 
 ---

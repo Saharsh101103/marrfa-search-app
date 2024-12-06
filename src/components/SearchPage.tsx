@@ -18,7 +18,7 @@ export function SearchPage() {
   const [results, setResults] = useState<BlogPost[]>([])
   const [totalResults, setTotalResults] = useState(0)
   const isMobile = useMediaQuery('(max-width: 640px)')
-  // Fetch results whenever the query, category, or page changes
+  
 const payload = {query, category}
 
   useEffect(() => {
@@ -36,21 +36,21 @@ const payload = {query, category}
           throw new Error("Invalid response from API");
         }
 
-        // Filter based on query and category
-        const filteredResults = data.payload.slice((page - 1) * RESULTS_PER_PAGE, page * RESULTS_PER_PAGE); // Pagination logic
+        
+        const filteredResults = data.payload.slice((page - 1) * RESULTS_PER_PAGE, page * RESULTS_PER_PAGE); 
 
         setResults(filteredResults);
-        setTotalResults(data.payload.length); // Assuming total count is in the response
+        setTotalResults(data.payload.length); 
       } catch (error) {
         console.error("Error fetching results:", error);
-        setResults([]); // Clear results on error
+        setResults([]); 
       }
     };
 
     fetchResults();
   }, [query, category, page]);
 
-  // Handle the load more button
+  
   const handleLoadMore = () => {
     setPage((prevPage) => prevPage + 1);
   };
