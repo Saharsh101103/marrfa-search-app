@@ -7,6 +7,7 @@ import { CategoryFilter } from './CategoryFilter'
 import { Pagination } from './Pagination'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { BlogPost } from '@/types'
+import Link from 'next/link'
 
 const RESULTS_PER_PAGE = 12
 
@@ -56,8 +57,20 @@ const payload = {query, category}
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-1">Blog Finder</h1>
-      <h1 className="text-base font-normal mb-8 tracking-tighter text-muted-foreground">Search for blogs you want using the functions listed below.</h1>
+        <div className='flex w-full justify-between'>
+        <div>
+        <h1 className="text-3xl font-bold mb-1">Blog Finder</h1>
+        <h1 className="text-base font-normal mb-8 tracking-tighter text-muted-foreground">Search for blogs you want using the functions listed below.</h1>
+        </div>
+        <div>
+            <Link href={'https://saharsh-raj.vercel.app'} target='_blank'>
+        <h2 className="text-base font-normal  tracking-tighter text-muted-foreground">By</h2>
+        <h1 className="text-3xl font-bold ">Saharsh Raj</h1>
+        <h3 className="text-base font-normal mb-8 tracking-tighter text-primary">Portfolio</h3>
+            </Link>
+        </div>
+        </div>
+      
       <SearchBox query={query} setQuery={setQuery} />
       <div className="my-4">
         <CategoryFilter category={category} setCategory={setCategory} />
