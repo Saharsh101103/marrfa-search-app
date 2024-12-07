@@ -42,6 +42,37 @@ export function BlogPost(params: BlogPostProps) {
     fetchPost()
   }, [params.id])
 
+  const cards = [
+    {
+      id: 1,
+      content: <SkeletonOne />,
+      className: "md:col-span-2",
+      thumbnail:
+        `https://picsum.photos/1080/1920?random=11${post ? post.id : '1'}`,
+    },
+    {
+      id: 2,
+      content: <SkeletonTwo />,
+      className: "col-span-1",
+      thumbnail:
+        `https://picsum.photos/1080/1920?random=11${post ? post.id : '2'}`,
+    },
+    {
+      id: 3,
+      content: <SkeletonThree />,
+      className: "col-span-1",
+      thumbnail:
+        `https://picsum.photos/1080/1920?random=11${post ? post.id : '3'}`,
+    },
+    {
+      id: 4,
+      content: <SkeletonFour />,
+      className: "md:col-span-2",
+      thumbnail:
+        `https://picsum.photos/1080/1920?random=11${post ? post.id : '4'}`,
+    },
+  ];
+
   if (!post) {
     return <div>Loading...</div>
   }
@@ -123,34 +154,5 @@ const SkeletonOne = () => {
     );
   };
 
-const cards = [
-    {
-      id: 1,
-      content: <SkeletonOne />,
-      className: "md:col-span-2",
-      thumbnail:
-        `https://picsum.photos/1080/1920?random=${Math.random()*10}`,
-    },
-    {
-      id: 2,
-      content: <SkeletonTwo />,
-      className: "col-span-1",
-      thumbnail:
-        `https://picsum.photos/1080/1920?random=${Math.random()*10}`,
-    },
-    {
-      id: 3,
-      content: <SkeletonThree />,
-      className: "col-span-1",
-      thumbnail:
-        `https://picsum.photos/1080/1920?random=${Math.random()*10}`,
-    },
-    {
-      id: 4,
-      content: <SkeletonFour />,
-      className: "md:col-span-2",
-      thumbnail:
-        `https://picsum.photos/1080/1920?random=${Math.random()*10}`,
-    },
-  ];
+
 
