@@ -32,7 +32,7 @@ export function ResultsList({ results, query }: ResultsListProps) {
             <div className='h-96 w-full relative rounded-xl'>
                 <Image src={post.src+'?random='+post.id} alt={''} fill className='rounded-xl' priority loading='eager'/>
             </div>
-            <CardDescription>{post.description}</CardDescription>
+            <CardDescription>{highlightSearchTerm(post.description, query)}</CardDescription>
           </CardHeader>
         </Card>
         </Link>
