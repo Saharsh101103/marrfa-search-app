@@ -7,11 +7,13 @@ interface SearchBoxProps {
   query: string
   setQuery: (query: string) => void
   suggestions: string[] // Array of suggestions passed as a prop
+  onSearch: (query: string) => void // Callback to display results
 }
 
-export function SearchBox({ query, setQuery, suggestions }: SearchBoxProps) {
+export function SearchBox({ query, setQuery, suggestions, onSearch }: SearchBoxProps) {
   const [localQuery, setLocalQuery] = useState(query)
   const [filteredSuggestions, setFilteredSuggestions] = useState<string[]>([])
+  const [isModalOpen, setModalOpen] = useState(true) // Manage modal visibility
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -26,16 +28,28 @@ export function SearchBox({ query, setQuery, suggestions }: SearchBoxProps) {
     return () => clearTimeout(timer)
   }, [localQuery, setQuery, suggestions])
 
-  // Function to highlight the search term in a suggestion
   const highlightSearchTerm = (text: string, searchTerm: string) => {
-    if (!searchTerm) return text;
-    const regex = new RegExp(`(${searchTerm})`, 'gi'); // 'gi' for case-insensitive search
-    return text.split(regex).map((part, index) => 
-      part.toLowerCase() === searchTerm.toLowerCase() 
-        ? <span key={index} className='text-yellow-500 font-bold'>{part}</span>
-        : part
-    );
-  };
+    if (!searchTerm) return text
+    const regex = new RegExp(`(${searchTerm})`, 'gi')
+    return text.split(regex).map((part, index) =>
+      part.toLowerCase() === searchTerm.toLowerCase() ? (
+        <span key={index} className="text-yellow-500 font-bold">
+          {part}
+        </span>
+      ) : (
+        part
+      )
+    )
+  }
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      setQuery(localQuery)
+      setFilteredSuggestions([]) // Close the suggestions list
+      onSearch(localQuery) // Trigger the search results display
+      setModalOpen(false) // Close the modal
+    }
+  }
 
   return (
     <div className="relative w-full">
@@ -43,21 +57,24 @@ export function SearchBox({ query, setQuery, suggestions }: SearchBoxProps) {
         type="search"
         placeholder="Search blog posts..."
         value={localQuery}
-        onChange={(e) => setLocalQuery(e.target.value)}
+        onChange={(e) => {setLocalQuery(e.target.value), setModalOpen(true)}}
+        onKeyDown={handleKeyDown}
         className="w-full"
       />
-      {localQuery && filteredSuggestions.length > 0 && (
-        <ul className="absolute z-10  border border-primary rounded-md mt-1 max-h-40 overflow-y-auto w-full shadow-lg backdrop-blur-3xl">
+      {localQuery && filteredSuggestions.length > 0 && isModalOpen && (
+        <ul className="absolute z-10 border border-primary rounded-md mt-1 max-h-40 overflow-y-auto w-full shadow-lg backdrop-blur-3xl">
           {filteredSuggestions.map((suggestion, index) => (
             <li
               key={index}
               onClick={() => {
                 setLocalQuery(suggestion)
                 setQuery(suggestion)
+                setFilteredSuggestions([]) // Close suggestions list
+                onSearch(suggestion) // Trigger search
+                setModalOpen(false) // Close the modal
               }}
               className="px-4 py-2 cursor-pointer border-b border-muted hover:bg-primary text-primary-foreground"
             >
-              {/* Highlight the search term in the suggestion */}
               {highlightSearchTerm(suggestion, localQuery)}
             </li>
           ))}

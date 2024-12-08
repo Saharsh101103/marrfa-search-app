@@ -57,6 +57,37 @@ export function SearchPage() {
     fetchResults();
   }, [query, category, page]);
 
+  const fetchResults = async () => {
+    try {
+      const response = await fetch("/api/get-blogs", {
+        method: "POST",
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch blog data");
+      }
+
+      const data = await response.json();
+
+      if (data.status !== 200) {
+        throw new Error("Invalid response from API");
+      }
+
+      const filteredResults = data.payload.slice(
+        (page - 1) * RESULTS_PER_PAGE,
+        page * RESULTS_PER_PAGE
+      );
+      const suggestions = data.payload.map((post: BlogPost) => post.title);
+      setSuggestions(suggestions);
+      setResults(filteredResults);
+      setTotalResults(data.payload.length);
+    } catch (error) {
+      console.error("Error fetching results:", error);
+      setResults([]);
+    }
+  };
+
   const handleLoadMore = () => {
     setPage((prevPage) => prevPage + 1);
   };
@@ -83,7 +114,7 @@ export function SearchPage() {
         </div>
       </div>
 
-      <SearchBox query={query} setQuery={setQuery} suggestions={suggestions} />
+      <SearchBox query={query} setQuery={setQuery} suggestions={suggestions} onSearch={fetchResults} />
       <div className="my-4">
         <CategoryFilter category={category} setCategory={setCategory} />
       </div>
