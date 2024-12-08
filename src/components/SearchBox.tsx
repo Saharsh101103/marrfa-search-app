@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, ChangeEvent } from 'react'
 import { Input } from '@/components/ui/input'
 
 interface SearchBoxProps {
@@ -42,6 +42,11 @@ export function SearchBox({ query, setQuery, suggestions, onSearch }: SearchBoxP
     )
   }
 
+  const handleOnchange= (e: ChangeEvent<HTMLInputElement>) => {
+    setLocalQuery(e.target.value)
+    setModalOpen(true)
+  }
+
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       setQuery(localQuery)
@@ -57,7 +62,7 @@ export function SearchBox({ query, setQuery, suggestions, onSearch }: SearchBoxP
         type="search"
         placeholder="Search blog posts..."
         value={localQuery}
-        onChange={(e) => {setLocalQuery(e.target.value), setModalOpen(true)}}
+        onChange={(e) => handleOnchange(e)}
         onKeyDown={handleKeyDown}
         className="w-full"
       />
